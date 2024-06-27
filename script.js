@@ -1,6 +1,7 @@
 const questionElement = document.querySelector('.question');
 const ansBtnsElement = document.getElementById('Ansbtns');
 const nextButton = document.getElementById('next');
+const skipButton = document.getElementById('skip');
 let currentQindex = 0;
 let score = 0;
 let questions = [];
@@ -43,6 +44,7 @@ async function startQuiz() {
     score = 0;
     nextButton.innerHTML = 'Next';
     nextButton.style.display = 'none';
+    skipButton.style.display = 'block'; // Display skip button at start
     showQuestion();
 }
 
@@ -86,20 +88,40 @@ function selectAnswer(e) {
     Array.from(ansBtnsElement.children).forEach(button => {
         if (button.dataset.correct === 'true') {
             button.classList.add('correct');
+        } else {
+            button.classList.add('wrong');
         }
         button.disabled = true;
     });
 
     nextButton.style.display = 'block';
-    nextButton.onclick = () => {
-        currentQindex++;
-        if (currentQindex < questions.length) {
-            showQuestion();
-        } else {
-            showScore();
-        }
-    };
+    skipButton.style.display = 'none'; // Hide skip button after answering
+
+    // Check if all questions are answered
+    if (currentQindex === questions.length - 1) {
+        skipButton.style.display = 'none'; // Hide skip button if last question
+    }
 }
+
+nextButton.addEventListener('click', () => {
+    currentQindex++;
+    if (currentQindex < questions.length) {
+        showQuestion();
+        skipButton.style.display = 'block'; // Show skip button for new question
+    } else {
+        showScore();
+    }
+});
+
+skipButton.addEventListener('click', () => {
+    currentQindex++;
+    if (currentQindex < questions.length) {
+        showQuestion();
+        skipButton.style.display = 'block'; // Show skip button for new question
+    } else {
+        showScore();
+    }
+});
 
 function showScore() {
     resetState();
@@ -107,6 +129,7 @@ function showScore() {
     nextButton.innerHTML = 'Restart';
     nextButton.style.display = 'block';
     nextButton.onclick = startQuiz;
+    skipButton.style.display = 'none'; // Hide skip button after quiz ends
 }
 
 startQuiz();

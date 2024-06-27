@@ -12,6 +12,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
@@ -69,6 +70,7 @@ body {
     width: 20%;
     background-color: #0f1b40;
     color: #dedede;
+    text-align: center;
     border: none;
     border-radius: 4px;
     transition: all .3s;
